@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ahmad A'zam.Til nomusi yopiq savol-javob</title>
+<style>
+    body { margin:0; padding:0; background:#111; font-family:Arial; color:white; display:flex; justify-content:center; align-items:center; height:100vh; overflow:hidden; }
+    #startScreen { position:fixed; top:0; left:0; width:100%; height:100%; background:#111; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; z-index:9999; padding:20px; }
+    #startScreen h1 { color:#00ff99; font-size:50px; }
+    .oyat { max-width:800px; font-size:28px; line-height:1.8; color:#ddd; margin-top:20px; }
+    #startScreen h3 { color:#00ff99; margin-top:20px; }
+    #count { font-size:100px; color:#00ff99; margin-top:40px; animation:pulse 1s infinite; }
+    @keyframes pulse { 0%{transform:scale(1);} 50%{transform:scale(1.2);} 100%{transform:scale(1);} }
+    .box { width:650px; background:#1e1e1e; padding:30px; border-radius:20px; text-align:center; box-shadow:0 0 20px black; }
+    h2 { color:#00ff99; }
+    input { width:100%; padding:15px; margin-top:15px; border:none; border-radius:10px; font-size:18px; }
+    button { width:100%; padding:15px; margin-top:15px; border:none; border-radius:10px; background:#00ff99; color:black; font-weight:bold; cursor:pointer; font-size:18px; }
+    #result { margin-top:15px; font-size:20px; }
+</style>
+</head>
+<body>
+
+<div id="startScreen">
+    <h1>📚1-Bob.Buzuq til havosi </h1>
+    <p class="oyat">“Robbing seni tark etmadi va g‘azab ham qilmadi.<br> Albatta oxirat sen uchun bu dunyodan yaxshidir.”</p>
+    <h3>🌙 Zuho surasi 93:3-4</h3>
+    <div id="count">3</div>
+</div>
+
+<div class="box">
+    <h2 id="question"></h2>
+    <input type="text" id="answer" placeholder="Javob yozing...">
+    <button onclick="check()">Tekshirish</button>
+    <button onclick="finishQuiz()" style="background:#ff4444; color:white; margin-top:10px;">Testni tugatish</button>
+    <div id="result"></div>
+</div>
+
+<script>
+    /* COUNTDOWN */
+    let time = 3;
+    let timer = setInterval(()=>{
+        document.getElementById("count").innerText = time;
+        time--;
+        if(time < 0){
+            clearInterval(timer);
+            document.getElementById("startScreen").style.display="none";
+        }
+    },1000);
+
+    /* QUIZ DATA */
+const quiz = [
+    {question: "Ahmad A'zamning eng yaxshi ko'rgan lug'ati?", correct: "O'zbekcha ruscha lug'at"},
+    {question: "Ahmad Azam nechchinchi yilda chiqqan ruscha-o'zbekcha lug'atni yaxshi ko'rar edi?", correct: "1959"},
+    {question: "Lug'at ham ... mafkura quroliga aylandi?", correct: "Lug'at"},
+    {question: "плоскогубцы nima?", correct: "Yassi ombir"},
+    {question: "Mixni tishlab sug'uradigan samarqandda nima deyiladi?", correct: "Kampirog'iz"},
+    {question: "Mixni tishlab sug'urgich qashqadaryoda nima deyiladi?", correct: "Tishlog'ich"},
+    {question: "дoмба nima?", correct: "To'g'on"},
+    {question: "To'g'on o'zbek tilida?", correct: "Dam"},
+    {question: "G'allaoroldagi temir yo'l bekati?", correct: "Bogarniy"},
+    {question: "Bogarniy asli o'zimizniki ya'ni?", correct: "Baxorgi"},
+    {question: "Po'yezdlar bir-biriga yo'l beradigan bekat?", correct: "Ayirg'ich ayirma"},
+    {question: "Po'yezdlar bir-biriga yo'l beradigan bekat ruschada nima deyiladi?", correct: "Разездь"},
+    {question: "Shaxarchamiz yonidan katta o'zbek yo'li o'tdi, qishloqlardan chiqqan yo'l u bilan kesishgan joy...?", correct: "Перкрёска"},
+    {question: "Перекрёскаni o'rniga bozor qurildi va nima deb ataldi?", correct: "Shaymon"},
+    {question: "Jonli so'zlashuv tilini yana qanday atasa bo'ladi?", correct: "Hammasi to'g'ri"},
+    {question: "Avom so'zining manosi nima?", correct: "Omma ko'plik"},
+    {question: "Chiptasiz yurgan odam?", correct: "Quyon"},
+    {question: "Transport o'rniga qanday so'z ishlatsa bo'ladi?", correct: "Ulov"},
+    {question: "Toponimka bilimdoni?", correct: "Suyun Qorayev"},
+    {question: "Dala malikasi?", correct: "Makka jo'xori"},
+    {question: "Volga daryosi boyida yashovchi og'ir ahvolli xalq nima deb ataladi?", correct: "Бурлок"},
+    {question: "Volga daryosi boyida yashovchi og'ir ahvolli xalq o'zimizda qanday ataladi?", correct: "Солдав"},
+    {question: "Tarix darsliklarida o'tmishdagi ishchilar boshlig'i?", correct: "Стачки"},
+    {question: "Ahmad A'zam tug'ilgan tumanda 2 ta bozorninh biri nima deb atalar edi?", correct: "Hammasi"},
+    {question: "Ботинка o'zbekchada nima?", correct: "Boshmoq"},
+    {question: "Туфли o'zbekchada qanday ataladi?", correct: "Etik"},
+    {question: "Сопошка?", correct: "Etikcha"},
+    {question: "Носки?", correct: "Paypoq"},
+    {question: "Носкиni yana qanday atasa bo'ladi?", correct: "Jilop"},
+    {question: "Avvalari 'asmishka choy olib kel' deyishardi, 'осьмушка' nima degani?", correct: "Hammasi to'g'ri"},
+    {question: "Кипяток keng qo'llanildi o'rniga qanday so'z o'zimizda bor edi?", correct: "Hammasi to'g'ri"},
+    {question: "Bizning shaharcha qanday atalgan?", correct: "Jomboy"},
+    {question: "Yuriy Gagarin qayerga o'tirib qoldi?", correct: "Mirzacho'lga"},
+    {question: "Rus turkologi kim?", correct: "Н.А.босконов"},
+    {question: "Н.А.Босконов 'Русские фамилии Тюркского происхождение' ilmiy ishida 1979-yilda nechta familiyani o'zgarganini ko'rsatib o'tgan?", correct: "300"}
+];
+
+    let i = 0;
+    let score = 0;
+
+    function load(){
+        document.getElementById("result").innerHTML = "";
+        document.getElementById("answer").value = "";
+        document.getElementById("question").innerText = (i + 1) + "/" + quiz.length + ". " + quiz[i].question;
+    }
+
+    function check(){
+        let user = document.getElementById("answer").value.toLowerCase().trim();
+        let correct = quiz[i].correct.toLowerCase();
+
+        if(user === correct){
+            document.getElementById("result").innerHTML = "✅ To'g'ri";
+            score++;
+        } else {
+            document.getElementById("result").innerHTML = "❌ Noto'g'ri. To'g'ri javob: " + quiz[i].correct;
+        }
+
+        setTimeout(()=>{
+            i++;
+            if(i < quiz.length){
+                load();
+            } else {
+                finishQuiz();
+            }
+        }, 1500);
+    }
+
+    function finishQuiz() {
+        i = quiz.length;
+        document.getElementById("question").innerText = "🎉 Quiz Yakunlandi";
+        document.getElementById("answer").style.display = "none";
+        
+        document.querySelectorAll(".box > button").forEach(b => b.style.display = "none");
+        
+        document.getElementById("result").innerHTML = `
+            <div style="font-size:24px; color:#fff; line-height:2;">
+                ✅ To'g'ri: <b style="color:#00ff99;">${score}</b><br>
+                ❌ Noto'g'ri: <b style="color:#ff4444;">${quiz.length - score}</b><br>
+                Yakuniy natija: <b>${score} / ${quiz.length}</b>
+            </div>
+            <button onclick="location.reload()" style="background:#00ff99; margin-top:20px;">🔄 Qayta ishlash</button>
+        `;
+    }
+
+    load();
+</script>
+
+</body>
+</html>

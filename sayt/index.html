@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yosh Kitobxon 2026-2027-yil 20-30 yosh toifasi</title>
+    <style>
+        body { margin: 0; padding: 0; background: #111; font-family: Arial; color: white; }
+        
+        header { 
+            background: #1e1e1e; padding: 20px; text-align: center; 
+            font-size: 28px; font-weight: bold; color: #00ff99; 
+            box-shadow: 0 0 15px black; margin-bottom: 30px;
+        }
+
+        .container { padding: 20px; }
+
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); 
+            gap: 20px; 
+        }
+
+        .book { 
+            background: #1e1e1e; border-radius: 15px; overflow: hidden; 
+            transition: 0.3s; box-shadow: 0 0 10px rgba(0,0,0,0.5); 
+            text-decoration: none; color: white; display: block;
+        }
+
+        .book:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(0,255,153,0.3); }
+
+        .book img { width: 100%; height: 200px; object-fit: cover; }
+
+        .book p { 
+            text-align: center; padding: 12px; font-size: 14px; 
+            color: white; /* Matn oq rangda */
+            font-weight: bold;
+            margin: 0;
+        }
+
+        @media(max-width:600px) {
+            .grid { grid-template-columns: repeat(2, 1fr); }
+            header { font-size: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    Nazarov's 📚 Yosh Kitobxon 2026-2027 (20-30 yosh)
+</header>
+
+<div class="container">
+    <div class="grid">
+
+        <!-- Kitoblar ro'yxati -->
+        <a href="TIlnomusi_umumiy.HTML" target="_blank" class="book">
+            <img src="til.jpg" alt="Kitob muqovasi">
+            <p>Ahmad A'zam <br> Til nomusi</p>
+        </a>
+
+
+
+    </div>
+</div>
+
+</body>
+</html>
